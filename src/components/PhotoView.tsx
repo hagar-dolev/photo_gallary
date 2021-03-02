@@ -9,16 +9,16 @@ const tinyY = 242;
 
 const borderColors = (tags: string[] | undefined) => {
   if (tags === undefined) {
-    return "gray";
+    return "LightSlateGray";
   }
   if (tags.includes("sky") || tags.includes("beach")) {
-    return "blue";
+    return "SteelBlue";
   } else if (tags.includes("animal")) {
-    return "yellow";
+    return "LemonChiffon";
   } else if (tags.includes("outdoor")) {
-    return "green";
+    return "MediumSeaGreen";
   }
-  return "gray";
+  return "LightSlateGray";
 };
 
 const PhotoContainer = styled.div(
@@ -69,6 +69,7 @@ const Description = styled.div((props: { isEnlarged: boolean | undefined }) => {
     color: "black",
     fontSize: isEnlarged ? "24px" : "16px",
     margin: isEnlarged ? "10px 15px" : "3px 15px",
+    textAlign: "center",
     // width: isEnlarged ? `${largeX - 50}px` : `${tinyX - 50}px`,
   };
 });
@@ -81,6 +82,7 @@ const Tags = styled.div((props: { isEnlarged: boolean | undefined }) => {
     fontStyle: "italic",
     fontSize: isEnlarged ? "20px" : "14px",
     margin: isEnlarged ? "0" : "3px 15px",
+    textAlign: "center",
     // width: isEnlarged ? `${largeX - 50}px` : `${tinyX - 50}px`,
   };
 });
