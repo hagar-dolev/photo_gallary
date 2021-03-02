@@ -1,12 +1,10 @@
 import React from "react";
 import styled from "@emotion/styled";
-import "./App.css";
 import "./reset.css";
+import "./App.css";
 import { Gallary } from "./components/Gallary";
 
 const AppContainer = styled.div({
-  //backgroundColor: "black",
-  //direction: "rtl",
   display: "flex",
   flexDirection: "column",
   height: "100%",

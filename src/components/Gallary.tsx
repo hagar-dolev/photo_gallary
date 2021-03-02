@@ -13,9 +13,16 @@ const GallaryContainer = styled.div({
   display: "flex",
   flexWrap: "wrap",
   justifyContent: "space-around",
-  margin: "20px",
-  // alignItems: "center",
-  //zIndex: 80,
+  padding: "10px",
+});
+
+const LoadingView = styled.div({
+  display: "flex",
+  width: "100%",
+  height: "100%",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "black",
 });
 
 type GallaryProps = {
@@ -28,12 +35,18 @@ type GallaryState = {
 };
 
 export class Gallary extends Component<GallaryProps, GallaryState> {
-  async componentDidMount() {
-    const { imageAmount } = this.props;
-    const photos: PhotoType[] = await randomImages(imageAmount, 1000, 610);
-    this.setState({
-      photos: photos,
+  constructor(props: GallaryProps) {
+    super(props);
+    this.state = {
+      photos: [],
       enlargedPhoto: undefined,
+    };
+  }
+
+  componentDidMount() {
+    const { imageAmount } = this.props;
+    randomImages(imageAmount, 1000, 610).then((photos) => {
+      this.setState({ photos });
     });
   }
 
@@ -43,37 +56,53 @@ export class Gallary extends Component<GallaryProps, GallaryState> {
     });
   }
 
-  handlerClose(photo: PhotoType) {
+  handlerClose() {
     this.setState({
       enlargedPhoto: undefined,
     });
   }
 
   render() {
-    if (this.state) {
-      const { photos, enlargedPhoto } = this.state;
+    const { photos, enlargedPhoto } = this.state;
+
+    if (photos.length === 0) {
       return (
-        <GallaryContainer>
-          {!enlargedPhoto ? (
-            photos.map((photo: PhotoType) => {
-              return (
-                <PhotoView
-                  img={photo}
-                  isEnlarged={false}
-                  onClick={this.handlerEnlarge.bind(this)}
-                ></PhotoView>
-              );
-            })
-          ) : (
-            <PhotoView
-              img={enlargedPhoto}
-              isEnlarged={true}
-              onClick={this.handlerClose.bind(this)}
-            ></PhotoView>
-          )}
-        </GallaryContainer>
+        <LoadingView>
+          <div>Loading...</div>
+        </LoadingView>
       );
     }
-    return <div />;
+
+    return (
+      <GallaryContainer>
+        {!enlargedPhoto ? (
+          photos.map((photo: PhotoType) => {
+            return (
+              <PhotoView
+                img={photo}
+                isEnlarged={false}
+                onClick={() => {
+                  if (
+                    !(
+                      photo.tags?.includes("person") ||
+                      photo.tags?.includes("people") ||
+                      photo.description?.includes("person")
+                    )
+                  ) {
+                    this.handlerEnlarge.bind(this)(photo);
+                  }
+                }}
+              ></PhotoView>
+            );
+          })
+        ) : (
+          <PhotoView
+            img={enlargedPhoto}
+            isEnlarged={true}
+            onClick={this.handlerClose.bind(this)}
+          ></PhotoView>
+        )}
+      </GallaryContainer>
+    );
   }
 }

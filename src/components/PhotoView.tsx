@@ -7,7 +7,10 @@ const largeY = 610;
 const tinyX = 390;
 const tinyY = 242;
 
-const borderColors = (tags: string[]) => {
+const borderColors = (tags: string[] | undefined) => {
+  if (tags === undefined) {
+    return "gray";
+  }
   if (tags.includes("sky") || tags.includes("beach")) {
     return "blue";
   } else if (tags.includes("animal")) {
@@ -44,6 +47,11 @@ const PhotoViewContainer = styled.div(
   (props: { isEnlarged: boolean | undefined }) => {
     const { isEnlarged } = props;
     return {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      marginTop: "10px",
+      // padding: "20px",
       width: isEnlarged ? `${largeX + 50}px` : `${tinyX + 50}px`,
       height: isEnlarged ? `${largeY + 50}px` : `${tinyY + 50}px`,
     };
@@ -59,9 +67,9 @@ const Description = styled.div((props: { isEnlarged: boolean | undefined }) => {
   const { isEnlarged } = props;
   return {
     color: "black",
-    fontsize: isEnlarged ? "30px" : "12px",
-    margin: isEnlarged ? "15px 20px" : "3px 15px",
-    width: isEnlarged ? `${largeX - 50}px` : `${tinyX - 50}px`,
+    fontSize: isEnlarged ? "24px" : "16px",
+    margin: isEnlarged ? "10px 15px" : "3px 15px",
+    // width: isEnlarged ? `${largeX - 50}px` : `${tinyX - 50}px`,
   };
 });
 
@@ -71,39 +79,23 @@ const Tags = styled.div((props: { isEnlarged: boolean | undefined }) => {
     color: "black",
     size: "9px",
     fontStyle: "italic",
-    fontsize: isEnlarged ? "30px" : "12px",
-    margin: isEnlarged ? "15px 20px" : "3px 15px",
-    width: isEnlarged ? `${largeX - 50}px` : `${tinyX - 50}px`,
+    fontSize: isEnlarged ? "20px" : "14px",
+    margin: isEnlarged ? "0" : "3px 15px",
+    // width: isEnlarged ? `${largeX - 50}px` : `${tinyX - 50}px`,
   };
 });
 
 type PhotoViewProps = {
   img: PhotoType;
-  onClick: Function;
+  onClick: () => void;
   isEnlarged: boolean | undefined;
 };
 
 export class PhotoView extends Component<PhotoViewProps> {
-  //   constructor(props: PhotoProps) {
-  //     super(props);
-  //   }
   render() {
     const { img, onClick, isEnlarged } = this.props;
     return (
-      <PhotoViewContainer
-        onClick={() => {
-          if (
-            !(
-              img.tags.includes("person") ||
-              img.tags.includes("people") ||
-              img.description.includes("person")
-            )
-          ) {
-            onClick(img);
-          }
-        }}
-        isEnlarged={isEnlarged}
-      >
+      <PhotoViewContainer onClick={onClick} isEnlarged={isEnlarged}>
         <PhotoContainer
           isEnlarged={isEnlarged}
           borderColor={borderColors(img.tags)}
@@ -111,7 +103,7 @@ export class PhotoView extends Component<PhotoViewProps> {
           <Photo src={`${img.srcUrl}`} />
         </PhotoContainer>
         <Description isEnlarged={isEnlarged}>{img.description}</Description>
-        <Tags isEnlarged={isEnlarged}>{img.tags.join(", ")}</Tags>
+        <Tags isEnlarged={isEnlarged}>{img.tags?.join(", ") ?? ""}</Tags>
       </PhotoViewContainer>
     );
   }
