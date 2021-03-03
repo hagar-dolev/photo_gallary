@@ -1,29 +1,9 @@
 import React, { Component } from "react";
-import styled from "@emotion/styled";
 
 import { PhotoView } from "./PhotoView";
 import { PhotoType } from "../types/PhotoType";
 import { randomImages } from "../photoGetter";
-
-const GallaryContainer = styled.div({
-  width: "100%",
-  height: "100%",
-  position: "relative",
-  flexDirection: "row",
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "space-around",
-  padding: "10px",
-});
-
-const LoadingView = styled.div({
-  display: "flex",
-  width: "100%",
-  height: "100%",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "black",
-});
+import "./gallary.css";
 
 type GallaryProps = {
   imageAmount: number;
@@ -67,14 +47,14 @@ export class Gallary extends Component<GallaryProps, GallaryState> {
 
     if (photos.length === 0) {
       return (
-        <LoadingView>
+        <div className="loadingView">
           <div>Loading...</div>
-        </LoadingView>
+        </div>
       );
     }
 
     return (
-      <GallaryContainer>
+      <div className="gallaryContainer">
         {!enlargedPhoto ? (
           photos.map((photo: PhotoType) => {
             return (
@@ -102,7 +82,7 @@ export class Gallary extends Component<GallaryProps, GallaryState> {
             onClick={this.handlerClose.bind(this)}
           ></PhotoView>
         )}
-      </GallaryContainer>
+      </div>
     );
   }
 }
