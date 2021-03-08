@@ -1,19 +1,18 @@
 import React, { Component } from "react";
 import { PhotoType } from "../types/PhotoType";
-import "./photoview.css";
 
 const borderColors = (tags: string[] | undefined) => {
   if (tags === undefined) {
-    return "";
+    return "border-secondary";
   }
   if (tags.includes("sky") || tags.includes("beach")) {
-    return "Border-Blue";
+    return "border-primary";
   } else if (tags.includes("animal")) {
-    return "Border-Yellow";
+    return "border-danger";
   } else if (tags.includes("outdoor")) {
-    return "Border-Green";
+    return "border-success";
   }
-  return "";
+  return "border-secondary";
 };
 
 type PhotoViewProps = {
@@ -27,25 +26,31 @@ export class PhotoView extends Component<PhotoViewProps> {
     const { img, onClick, isEnlarged } = this.props;
     return (
       <div
-        className={`PhotoViewContainer${
-          isEnlarged ? " PhotoViewContainer-Enlarged" : ""
-        }`}
+        className={
+          isEnlarged
+            ? "mx-auto col-xl col-md-6"
+            : `col-xl-3 col-lg-4 col-md-6 mb-4`
+        }
         onClick={onClick}
       >
         <div
-          className={`PhotoContainer${
-            isEnlarged ? " PhotoContainer-Enlarged" : ""
-          }${" " + borderColors(img.tags)}`}
+          className={`bg-white rounded shadow-sm rounded border ${
+            isEnlarged ? "" : borderColors(img.tags)
+          }`}
         >
-          <img className="Photo" src={`${img.srcUrl}`} alt="" />
-        </div>
-        <div className={`Text${isEnlarged ? " Large-Regular-Text" : ""}`}>
-          {img.description}
-        </div>
-        <div
-          className={`Text Tag-Text${isEnlarged ? " Tag-Text-Enlarged" : ""}`}
-        >
-          {img.tags?.join(", ") ?? ""}
+          <img className="card-img-top" src={`${img.srcUrl}`} alt="" />
+          <div className="p-4">
+            <div className="text-dark">{img.description}</div>
+            <div className={`small d-flex flex-wrap align-content-around `}>
+              {img.tags?.map((tag) => {
+                return (
+                  <span className="m-1 badge badge-secondary rounded-pill font-weight-normal">
+                    {tag}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     );
