@@ -1,5 +1,4 @@
 import { getRandomInt } from "./utils";
-import { VisionDescribeResponse } from "./types/VisionDescribeResponse";
 
 const key = "1a8b5921600c4f1a8fccb93eb05c98f1";
 const endpoint =

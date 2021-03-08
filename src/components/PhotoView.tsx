@@ -29,7 +29,7 @@ export class PhotoView extends Component<PhotoViewProps> {
         className={
           isEnlarged
             ? "mx-auto col-xl col-md-6"
-            : `col-xl-3 col-lg-4 col-md-6 mb-4`
+            : "col-xl-3 col-lg-4 col-md-6 mb-4"
         }
         onClick={onClick}
       >
@@ -38,7 +38,12 @@ export class PhotoView extends Component<PhotoViewProps> {
             isEnlarged ? "" : borderColors(img.tags)
           }`}
         >
-          <img className="card-img-top" src={`${img.srcUrl}`} alt="" />
+          <img
+            key={`img_${img.id}`}
+            className="card-img-top"
+            src={`${img.srcUrl}`}
+            alt=""
+          />
           <div className="p-4">
             <div className="text-dark">{img.description}</div>
             <div className={`small d-flex flex-wrap align-content-around `}>
